@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFTC Works | Premium Lanyards</title>
+    
+    <!-- Tailwind CSS for Apple-like styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- San Francisco / Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'media',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                    },
+                    colors: {
+                        apple: {
+                            blue: '#0071e3',
+                            blueHover: '#0077ED',
+                            gray: '#f5f5f7',
+                            dark: '#1d1d1f'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { -webkit-font-smoothing: antialiased; }
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        @media (prefers-color-scheme: dark) {
+            .glass {
+                background: rgba(29, 29, 31, 0.7);
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+        }
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Smooth reveal animations */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body class="bg-apple-gray dark:bg-black text-apple-dark dark:text-white font-sans selection:bg-apple-blue selection:text-white">
+
+    <!-- MAIN STOREFRONT VIEW -->
+    <div id="main-store">
+        <!-- Main Navigation -->
+        <nav class="fixed top-0 w-full z-40 glass">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-12 text-xs md:text-sm font-medium">
+                    <div class="flex items-center gap-2 cursor-pointer">
+                        <i data-lucide="command" class="w-4 h-4"></i>
+                        <span class="font-semibold text-base tracking-tight">NFTC Works</span>
+                    </div>
+                    <div class="flex items-center gap-6">
+                        <a href="#" class="text-gray-500 hover:text-black dark:hover:text-white transition-colors">Store</a>
+                        <a href="https://nftcworks.me/orders-tracker" class="text-gray-500 hover:text-black dark:hover:text-white transition-colors flex items-center gap-1">
+                            <i data-lucide="box" class="w-4 h-4"></i> Track Order
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <header class="pt-32 pb-16 px-4 text-center max-w-4xl mx-auto reveal active">
+            <h2 class="text-apple-blue font-semibold tracking-widest uppercase text-xs mb-4">Lanyards</h2>
+            <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-6 leading-tight">Profoundly powerful.<br>Beautifully simple.</h1>
+            <p class="text-xl md:text-2xl text-gray-500 font-medium max-w-2xl mx-auto mb-10">
+                The ultimate everyday carry. Designed for comfort, built for durability.
+            </p>
+        </header>
+
+        <!-- Product Grid (Injected by JavaScript) -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-32">
+            <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-10">
+                <!-- Products load here -->
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-white dark:bg-apple-dark py-10 border-t border-gray-200 dark:border-gray-800 text-center text-xs text-gray-500">
+            <p class="mb-3">Need help? Email <a href="mailto:support@nftcworks.me" class="text-apple-blue hover:underline">support@nftcworks.me</a></p>
+            <p>Copyright © <span id="year"></span> NFTC Works. All rights reserved.</p>
+        </footer>
+    </div>
+
+
+    <!-- APPLE-STYLE PRODUCT DETAIL PAGE (Hidden by default) -->
+    <div id="product-page" class="fixed inset-0 z-50 bg-apple-gray dark:bg-black overflow-y-auto hide-scroll hidden transform translate-y-full transition-transform duration-500">
+        
+        <!-- Sticky Apple Product Header -->
+        <div class="sticky top-0 z-50 glass px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto flex justify-between items-center h-16">
+                <!-- Left: Back Button & Title -->
+                <div class="flex items-center gap-4">
+                    <button onclick="closeProduct()" class="text-apple-blue hover:text-apple-blueHover flex items-center gap-1 text-sm font-medium transition-colors">
+                        <i data-lucide="chevron-left" class="w-5 h-5"></i> Back
+                    </button>
+                    <span id="detail-title" class="font-semibold text-lg hidden sm:block">Product Name</span>
+                </div>
+                
+                <!-- Right: Price & Order Button -->
+                <div class="flex items-center gap-4 text-sm">
+                    <span id="detail-price" class="font-medium text-gray-500">₱0.00</span>
+                    <a id="detail-order-btn" href="#" target="_blank" class="bg-apple-blue hover:bg-apple-blueHover text-white px-4 py-1.5 rounded-full font-medium transition-colors">
+                        Order Now
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detail Content -->
+        <div class="max-w-5xl mx-auto pt-16 pb-32 px-4 sm:px-6">
+            <!-- Large Title & Desc -->
+            <div class="text-center mb-16 mt-8">
+                <h2 id="detail-heading" class="text-4xl md:text-6xl font-bold mb-6 tracking-tight">The ultimate lanyard.</h2>
+                <p id="detail-desc" class="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed"></p>
+            </div>
+
+            <!-- Scrolling Image Gallery -->
+            <div id="detail-gallery" class="flex flex-col gap-6 md:gap-10">
+                <!-- Images are injected here -->
+            </div>
+            
+            <!-- Bottom Call to Action -->
+            <div class="mt-20 text-center">
+                <h3 class="text-3xl font-bold mb-6">Ready to get yours?</h3>
+                <a id="detail-order-btn-bottom" href="#" target="_blank" class="inline-block bg-black dark:bg-white text-white dark:text-black px-8 py-4 rounded-full font-semibold text-lg hover:scale-105 transition-transform">
+                    Order via Google Forms
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+        lucide.createIcons();
+
+        /* =========================================================================
+           🛒 EDIT YOUR STORE DATA HERE 🛒
+           
+           This is your "Database". To add a lanyard, just copy the block from 
+           { to }, add a comma, and paste it below. 
+           
+           HOW TO USE YOUR OWN IMAGES:
+           1. Create a folder named "Item" next to this index.html file on GitHub.
+           2. Upload your pictures there (e.g., lanyard1.jpg)
+           3. Change the image links below to: "Item/lanyard1.jpg"
+        ========================================================================= */
+        const inventory = [
+            {
+                id: "classic-black",
+                name: "NFTC Classic Lanyard",
+                tagline: "Lightweight. Durable. Essential.",
+                price: "₱150",
+                description: "Woven with high-strength nylon and featuring a matte-black heavy duty clip. The perfect balance of comfort and security for your everyday carry.",
+                gformLink: "https://docs.google.com/forms/your-link-here",
+                
+                // MAIN IMAGE (Shows on the storefront grid)
+                mainImage: "https://images.unsplash.com/photo-1590634641680-e6977df76861?auto=format&fit=crop&q=80&w=800", // Change to "Item/your-image.jpg"
+                
+                // SCROLLING IMAGES (Shows when they click the item)
+                scrollingImages: [
+                    "https://images.unsplash.com/photo-1590634641680-e6977df76861?auto=format&fit=crop&q=80&w=1200", // Change to "Item/pic1.jpg"
+                    "https://images.unsplash.com/photo-1620005716170-c529ba852109?auto=format&fit=crop&q=80&w=1200"  // Change to "Item/pic2.jpg"
+                ]
+            },
+            {
+                id: "pro-series",
+                name: "NFTC Pro Series",
+                tagline: "Wider strap. Maximum comfort.",
+                price: "₱250",
+                description: "Designed for professionals who wear their ID all day. Features an upgraded quick-release buckle and an ultra-soft widened neckband.",
+                gformLink: "https://docs.google.com/forms/your-link-here",
+                
+                mainImage: "https://images.unsplash.com/photo-1616422301981-64bb41e428a2?auto=format&fit=crop&q=80&w=800", // Change to "Item/pro-main.jpg"
+                
+                scrollingImages: [
+                    "https://images.unsplash.com/photo-1616422301981-64bb41e428a2?auto=format&fit=crop&q=80&w=1200" // Change to "Item/pro-detail.jpg"
+                ]
+            }
+        ];
+        /* ========================================================================= */
+
+        // Render the Storefront
+        const grid = document.getElementById('product-grid');
+        const productPage = document.getElementById('product-page');
+        const mainStore = document.getElementById('main-store');
+
+        function initStore() {
+            grid.innerHTML = '';
+            inventory.forEach((item, index) => {
+                const delay = index * 100; // Staggered animation
+                const card = document.createElement('div');
+                card.className = "group cursor-pointer bg-white dark:bg-[#1c1c1e] rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 reveal active border border-gray-100 dark:border-gray-800";
+                card.style.transitionDelay = `${delay}ms`;
+                card.onclick = () => openProduct(item.id);
+
+                card.innerHTML = `
+                    <div class="aspect-[4/3] bg-gray-100 dark:bg-black overflow-hidden relative">
+                        <img src="${item.mainImage}" alt="${item.name}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
+                    </div>
+                    <div class="p-8 text-center">
+                        <h3 class="text-2xl font-bold tracking-tight mb-2">${item.name}</h3>
+                        <p class="text-gray-500 mb-4">${item.tagline}</p>
+                        <span class="text-sm font-semibold text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-full">${item.price}</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Open the Apple-style Product Page
+        function openProduct(id) {
+            const item = inventory.find(i => i.id === id);
+            if (!item) return;
+
+            // Fill Data
+            document.getElementById('detail-title').textContent = item.name;
+            document.getElementById('detail-heading').textContent = item.name;
+            document.getElementById('detail-price').textContent = item.price;
+            document.getElementById('detail-desc').textContent = item.description;
+            
+            // Set Links
+            document.getElementById('detail-order-btn').href = item.gformLink;
+            document.getElementById('detail-order-btn-bottom').href = item.gformLink;
+
+            // Build Scrolling Gallery
+            const gallery = document.getElementById('detail-gallery');
+            gallery.innerHTML = '';
+            item.scrollingImages.forEach(imgSrc => {
+                const img = document.createElement('img');
+                img.src = imgSrc;
+                img.className = "w-full rounded-3xl shadow-md border border-gray-100 dark:border-gray-800 object-cover";
+                gallery.appendChild(img);
+            });
+
+            // Slide the page up
+            productPage.classList.remove('hidden');
+            // Small delay to allow display:block to apply before animating transform
+            setTimeout(() => {
+                productPage.classList.remove('translate-y-full');
+            }, 10);
+            
+            // Prevent background scrolling
+            document.body.style.overflow = 'hidden';
+            // Scroll product page to top
+            productPage.scrollTo(0,0);
+        }
+
+        // Close Product Page
+        function closeProduct() {
+            productPage.classList.add('translate-y-full');
+            // Wait for animation to finish before hiding
+            setTimeout(() => {
+                productPage.classList.add('hidden');
+                document.body.style.overflow = '';
+            }, 500);
+        }
+
+        // Start
+        initStore();
+    </script>
+</body>
+</html>
