@@ -46,8 +46,8 @@
         }
         @media (prefers-color-scheme: dark) {
             .glass {
-                background: rgba(29, 29, 31, 0.7);
-                border-bottom: 1px solid rgba(255,255,255,0.1);
+                background: rgba(10, 10, 12, 0.7);
+                border-bottom: 1px solid rgba(255,255,255,0.05);
             }
         }
         .hide-scroll::-webkit-scrollbar { display: none; }
@@ -57,15 +57,20 @@
         .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
         
-        /* Subtle Gradient Overlay for Dark Mode */
-        .dark-gradient {
-            background: linear-gradient(135deg, #0f1419 0%, #1a1f2e 50%, #0a0e16 100%);
+        /* NEW: Tracker-style Gradient Background */
+        .dark-tracker-bg {
+            background-color: #030712;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(30, 58, 138, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(88, 28, 135, 0.15) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(17, 24, 39, 1) 0px, transparent 100%);
+            background-attachment: fixed;
         }
     </style>
 </head>
-<body class="bg-apple-gray dark:bg-black dark:dark-gradient text-apple-dark dark:text-white font-sans selection:bg-apple-blue selection:text-white relative min-h-screen">
+<body class="bg-apple-gray dark:dark-tracker-bg text-apple-dark dark:text-white font-sans selection:bg-apple-blue selection:text-white relative min-h-screen">
 
-    <!-- ADMIN PANEL BAR (Hidden by default) -->
+    <!-- ADMIN PANEL BAR -->
     <div id="admin-panel" class="fixed bottom-0 w-full bg-black/90 backdrop-blur-md text-white px-6 py-4 z-[60] hidden flex flex-col sm:flex-row gap-4 justify-between items-center border-t border-gray-800">
         <div class="flex items-center gap-6">
             <div class="flex items-center gap-2">
@@ -73,7 +78,6 @@
                 <span class="font-semibold text-sm">Local Access Granted</span>
             </div>
             
-            <!-- Edit Mode Toggle Switch -->
             <button onclick="toggleEditMode()" class="flex items-center gap-3 bg-gray-800 px-4 py-2 rounded-full border border-gray-700 hover:bg-gray-700 transition">
                 <div id="toggle-bg" class="w-10 h-5 bg-gray-600 rounded-full relative transition-colors duration-300">
                     <div id="toggle-dot" class="w-3 h-3 bg-white rounded-full absolute top-1 left-1 transition-transform duration-300"></div>
@@ -116,7 +120,7 @@
             <h2 class="text-apple-blue font-semibold tracking-widest uppercase text-xs mb-2">Collection</h2>
         </header>
 
-        <!-- Product Grid (Injected by JavaScript) -->
+        <!-- Product Grid -->
         <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-32">
             <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8 lg:gap-10">
                 <!-- Products load here -->
@@ -124,8 +128,7 @@
         </section>
 
         <!-- Footer -->
-        <footer class="bg-white dark:bg-black/50 py-12 border-t border-gray-200 dark:border-white/5 text-center text-xs text-gray-500 pb-24">
-            
+        <footer class="bg-white dark:bg-black/20 py-12 border-t border-gray-200 dark:border-white/5 text-center text-xs text-gray-500 pb-24 backdrop-blur-md">
             <!-- Social Media Links -->
             <div class="flex justify-center gap-6 mb-8">
                 <a href="https://www.facebook.com/nftcworksofficial/" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors hover:scale-110 transform duration-200">
@@ -142,13 +145,11 @@
     </div>
 
 
-    <!-- APPLE-STYLE PRODUCT DETAIL PAGE (Hidden by default) -->
-    <div id="product-page" class="fixed inset-0 z-50 bg-apple-gray dark:bg-black overflow-y-auto hide-scroll hidden transform translate-y-full transition-transform duration-500">
+    <!-- PRODUCT DETAIL PAGE -->
+    <div id="product-page" class="fixed inset-0 z-50 bg-apple-gray dark:dark-tracker-bg overflow-y-auto hide-scroll hidden transform translate-y-full transition-transform duration-500">
         
-        <!-- Sticky Apple Product Header -->
         <div class="sticky top-0 z-50 glass px-4 sm:px-6 lg:px-8">
             <div class="max-w-7xl mx-auto flex justify-between items-center h-16">
-                <!-- Left: Back Button & Title -->
                 <div class="flex items-center gap-4">
                     <button onclick="closeProduct()" class="text-apple-blue hover:text-apple-blueHover flex items-center gap-1 text-sm font-medium transition-colors">
                         <i data-lucide="chevron-left" class="w-5 h-5"></i> Back
@@ -156,7 +157,6 @@
                     <span id="detail-title" class="font-semibold text-lg hidden sm:block">Product Name</span>
                 </div>
                 
-                <!-- Right: Price & Order Button -->
                 <div class="flex items-center gap-4 text-sm">
                     <span id="detail-price" class="font-medium text-gray-500">₱0.00</span>
                     <a id="detail-order-btn" href="#" target="_blank" class="bg-apple-blue hover:bg-apple-blueHover text-white px-4 py-1.5 rounded-full font-medium transition-colors">
@@ -166,20 +166,16 @@
             </div>
         </div>
 
-        <!-- Detail Content -->
         <div class="max-w-3xl mx-auto pt-16 pb-32 px-4 sm:px-6">
-            <!-- Large Title & Desc -->
             <div class="text-center mb-16 mt-8">
                 <h2 id="detail-heading" class="text-4xl md:text-6xl font-bold mb-6 tracking-tight">The ultimate lanyard.</h2>
                 <p id="detail-desc" class="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed"></p>
             </div>
 
-            <!-- Scrolling Image Gallery -->
             <div id="detail-gallery" class="flex flex-col gap-6 md:gap-10">
-                <!-- Images are injected here -->
+                <!-- Images load here -->
             </div>
             
-            <!-- Bottom Call to Action -->
             <div class="mt-20 text-center">
                 <h3 class="text-3xl font-bold mb-6">Ready to get yours?</h3>
                 <a id="detail-order-btn-bottom" href="#" target="_blank" class="inline-block bg-black dark:bg-white text-white dark:text-black px-8 py-4 rounded-full font-semibold text-lg hover:scale-105 transition-transform">
@@ -189,7 +185,7 @@
         </div>
     </div>
 
-    <!-- ADMIN: EDIT/ADD PRODUCT MODAL -->
+    <!-- ADMIN MODALS (ADD/EDIT) -->
     <div id="admin-modal" class="fixed inset-0 z-[70] bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="bg-white dark:bg-[#1c1c1e] w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
             <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-800 flex justify-between items-center bg-gray-50 dark:bg-[#1c1c1e]">
@@ -198,41 +194,35 @@
             </div>
             <div class="p-6 overflow-y-auto hide-scroll flex-1 space-y-4 text-sm">
                 <input type="hidden" id="edit-id">
-                
                 <div>
                     <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Product Name</label>
                     <input type="text" id="edit-name" class="w-full bg-gray-100 dark:bg-black border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-apple-blue" placeholder="e.g. NFTC Classic Lanyard">
                 </div>
-                
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Price</label>
-                        <input type="text" id="edit-price" class="w-full bg-gray-100 dark:bg-black border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-apple-blue" placeholder="e.g. ₱150">
+                        <input type="text" id="edit-price" class="w-full bg-gray-100 dark:bg-black border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-apple-blue" placeholder="₱0">
                     </div>
                     <div>
-                        <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Tagline (Short)</label>
-                        <input type="text" id="edit-tagline" class="w-full bg-gray-100 dark:bg-black border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-apple-blue" placeholder="Lightweight. Durable.">
+                        <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Tagline</label>
+                        <input type="text" id="edit-tagline" class="w-full bg-gray-100 dark:bg-black border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-apple-blue" placeholder="Tagline">
                     </div>
                 </div>
-
                 <div>
-                    <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Full Description</label>
-                    <textarea id="edit-desc" rows="3" class="w-full bg-gray-100 dark:bg-black border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-apple-blue" placeholder="Detailed product description..."></textarea>
+                    <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
+                    <textarea id="edit-desc" rows="3" class="w-full bg-gray-100 dark:bg-black border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-apple-blue"></textarea>
                 </div>
-
                 <div>
-                    <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Google Form Link (For Ordering)</label>
-                    <input type="text" id="edit-gform" class="w-full bg-gray-100 dark:bg-black border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-apple-blue" placeholder="https://docs.google.com/forms/...">
+                    <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Order Link</label>
+                    <input type="text" id="edit-gform" class="w-full bg-gray-100 dark:bg-black border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-apple-blue">
                 </div>
-
                 <div>
-                    <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Main Cover Image (URL or Folder Path)</label>
-                    <input type="text" id="edit-main-img" class="w-full bg-gray-100 dark:bg-black border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-apple-blue" placeholder="Item/cover.jpg">
+                    <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Main Image</label>
+                    <input type="text" id="edit-main-img" class="w-full bg-gray-100 dark:bg-black border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-apple-blue">
                 </div>
-
                 <div>
-                    <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Scrolling Details Images (One link per line)</label>
-                    <textarea id="edit-scroll-img" rows="3" class="w-full bg-gray-100 dark:bg-black border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-apple-blue" placeholder="Item/pic1.jpg&#10;Item/pic2.jpg"></textarea>
+                    <label class="block font-medium text-gray-700 dark:text-gray-300 mb-1">Gallery Images (One per line)</label>
+                    <textarea id="edit-scroll-img" rows="3" class="w-full bg-gray-100 dark:bg-black border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-apple-blue"></textarea>
                 </div>
             </div>
             <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-[#1c1c1e] flex justify-end gap-3">
@@ -242,25 +232,23 @@
         </div>
     </div>
 
-    <!-- ADMIN: EXPORT CODE MODAL -->
+    <!-- CODE MODAL -->
     <div id="code-modal" class="fixed inset-0 z-[80] bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="bg-white dark:bg-[#1c1c1e] w-full max-w-3xl rounded-3xl shadow-2xl overflow-hidden flex flex-col">
             <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-800 flex justify-between items-center">
-                <h3 class="font-bold text-xl">Save Your Changes to GitHub</h3>
+                <h3 class="font-bold text-xl">Save to GitHub</h3>
                 <button onclick="closeCodeModal()" class="text-gray-500 hover:text-black dark:hover:text-white"><i data-lucide="x" class="w-6 h-6"></i></button>
             </div>
-            <div class="p-6">
-                <p class="text-sm text-gray-500 mb-4">Because your site is hosted for free on GitHub Pages, you must manually save your new database. <br><b>Copy all the code below, go to your GitHub index.html file, and replace the old <code>let inventory = [...]</code> block with this one!</b></p>
+            <div class="p-6 text-sm">
                 <textarea id="export-code-area" readonly class="w-full h-64 bg-gray-100 dark:bg-black border border-gray-200 dark:border-gray-800 rounded-xl p-4 font-mono text-xs text-apple-blue focus:outline-none"></textarea>
             </div>
             <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-[#1c1c1e] flex justify-end">
-                <button onclick="copyExportCode()" id="copy-btn" class="bg-black dark:bg-white text-white dark:text-black px-6 py-2 rounded-full font-medium flex items-center gap-2 hover:scale-105 transition">
+                <button onclick="copyExportCode()" id="copy-btn" class="bg-black dark:bg-white text-white dark:text-black px-6 py-2 rounded-full font-medium flex items-center gap-2">
                     <i data-lucide="copy" class="w-4 h-4"></i> Copy Code
                 </button>
             </div>
         </div>
     </div>
-
 
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();
@@ -274,9 +262,6 @@
             document.getElementById('admin-panel').classList.remove('hidden');
         }
 
-        /* =========================================================================
-           🛒 YOUR STORE INVENTORY DATABASE 🛒
-        ========================================================================= */
         let inventory = [
             {
                 "id": "pro-series",
@@ -291,7 +276,6 @@
                 ]
             }
         ];
-        /* ========================================================================= */
 
         const grid = document.getElementById('product-grid');
         const productPage = document.getElementById('product-page');
@@ -326,7 +310,7 @@
             inventory.forEach((item, index) => {
                 const delay = index * 50; 
                 const card = document.createElement('div');
-                card.className = "group cursor-pointer bg-white dark:bg-white/[0.03] backdrop-blur rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 reveal active border border-gray-100 dark:border-white/10 relative";
+                card.className = "group cursor-pointer bg-white dark:bg-white/[0.03] backdrop-blur-xl rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 reveal active border border-gray-100 dark:border-white/10 relative";
                 card.style.transitionDelay = `${delay}ms`;
                 card.onclick = () => openProduct(item.id);
 
@@ -458,7 +442,7 @@
         }
 
         function deleteProduct(id) {
-            if (confirm("Are you sure you want to delete this product?")) {
+            if (confirm("Are you sure?")) {
                 inventory = inventory.filter(i => i.id !== id);
                 initStore();
             }

@@ -14,7 +14,7 @@
     <!-- San Francisco / Inter Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <script>
         tailwind.config = {
@@ -56,14 +56,9 @@
         /* Smooth reveal animations */
         .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
-        
-        /* Subtle Gradient Overlay for Dark Mode */
-        .dark-gradient {
-            background: linear-gradient(135deg, #0f1419 0%, #1a1f2e 50%, #0a0e16 100%);
-        }
     </style>
 </head>
-<body class="bg-apple-gray dark:bg-black dark:dark-gradient text-apple-dark dark:text-white font-sans selection:bg-apple-blue selection:text-white relative min-h-screen">
+<body class="bg-apple-gray dark:bg-black text-apple-dark dark:text-white font-sans selection:bg-apple-blue selection:text-white relative">
 
     <!-- ADMIN PANEL BAR (Hidden by default) -->
     <div id="admin-panel" class="fixed bottom-0 w-full bg-black/90 backdrop-blur-md text-white px-6 py-4 z-[60] hidden flex flex-col sm:flex-row gap-4 justify-between items-center border-t border-gray-800">
@@ -94,8 +89,9 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-center h-12 text-xs md:text-sm font-medium">
                     <div class="flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                        <!-- Replaced Lucide Icon with Image Logo -->
                         <img src="logo.png" alt="NFTC Works Logo" class="w-6 h-6 object-contain rounded-md" onerror="this.style.display='none'">
-                        <span class="font-semibold text-base tracking-tight">NFTC Works Store</span>
+                        <span class="font-semibold text-base tracking-tight">NFTC Works</span>
                     </div>
                     <div class="flex items-center gap-6">
                         <a href="#" onclick="window.scrollTo(0,0)" class="text-gray-500 hover:text-black dark:hover:text-white transition-colors">Store</a>
@@ -109,25 +105,26 @@
 
         <!-- Hero Section -->
         <header class="pt-24 pb-8 px-4 text-center max-w-4xl mx-auto reveal active">
-            <h1 class="text-5xl md:text-7xl font-black tracking-tighter mb-4 leading-tight text-gray-900 dark:text-white">Discover Unique Items.</h1>
-            <p class="text-lg md:text-2xl text-gray-500 font-medium max-w-2xl mx-auto mb-8">
+            <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-4 leading-tight">Simply Engineered.</h1>
+            <p class="text-lg md:text-xl text-gray-500 font-medium max-w-2xl mx-auto mb-8">
                 Creative works and Engineering Design.
             </p>
-            <h2 class="text-apple-blue font-semibold tracking-widest uppercase text-xs mb-2">Collection</h2>
+            <h2 class="text-apple-blue font-semibold tracking-widest uppercase text-xs mb-2">Items</h2>
         </header>
 
         <!-- Product Grid (Injected by JavaScript) -->
         <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-32">
+            <!-- ADJUSTED: 1 column on mobile (perfect fit), 2 columns on larger screens (sakto size) -->
             <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8 lg:gap-10">
                 <!-- Products load here -->
             </div>
         </section>
 
         <!-- Footer -->
-        <footer class="bg-white dark:bg-black/50 py-12 border-t border-gray-200 dark:border-white/5 text-center text-xs text-gray-500 pb-24">
+        <footer class="bg-white dark:bg-apple-dark py-10 border-t border-gray-200 dark:border-gray-800 text-center text-xs text-gray-500 pb-24">
             
             <!-- Social Media Links -->
-            <div class="flex justify-center gap-6 mb-8">
+            <div class="flex justify-center gap-6 mb-6">
                 <a href="https://www.facebook.com/nftcworksofficial/" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors hover:scale-110 transform duration-200">
                     <i data-lucide="facebook" class="w-6 h-6"></i>
                 </a>
@@ -167,6 +164,7 @@
         </div>
 
         <!-- Detail Content -->
+        <!-- ADJUSTED: Changed max-w-5xl to max-w-3xl so the scrolling pictures are not super huge on computer screens -->
         <div class="max-w-3xl mx-auto pt-16 pb-32 px-4 sm:px-6">
             <!-- Large Title & Desc -->
             <div class="text-center mb-16 mt-8">
@@ -266,9 +264,13 @@
         document.getElementById('year').textContent = new Date().getFullYear();
         lucide.createIcons();
 
+        // 🛡️ CHECK FOR LOCAL ENVIRONMENT (Admin mode ONLY works on your computer)
         const isLocal = window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        
+        // Admin mode is automatically available when you double-click the file on your computer. 
+        // It is completely disabled on the live internet.
         const isAdmin = isLocal; 
-        let isEditModeActive = false;
+        let isEditModeActive = false; // The toggle switch state
 
         if (isAdmin) {
             document.getElementById('admin-panel').classList.remove('hidden');
@@ -276,60 +278,68 @@
 
         /* =========================================================================
            🛒 YOUR STORE INVENTORY DATABASE 🛒
+           (This gets updated when you copy-paste the code from the Admin panel!)
         ========================================================================= */
         let inventory = [
-            {
-                "id": "pro-series",
-                "name": "Lanyard PUP",
-                "tagline": "Wider strap. Maximum comfort.",
-                "price": "₱100",
-                "description": "A Lanyard UPBEAT Style for PUP. ",
-                "gformLink": "https://forms.gle/1uMZRsCYVJiap5Xj6",
-                "mainImage": "Item/Cover.png",
-                "scrollingImages": [
-                    "Item/Lanyard1.jpeg"
-                ]
-            }
+          {
+                    "id": "pro-series",
+                    "name": "Lanyard PUP",
+                    "tagline": "Wider strap. Maximum comfort.",
+                    "price": "₱100",
+                    "description": "A Lanyard UPBEAT Style for PUP. ",
+                    "gformLink": "https://forms.gle/1uMZRsCYVJiap5Xj6",
+                    "mainImage": "Item/Cover.png",
+                    "scrollingImages": [
+                              "Item/Lanyard1.jpeg"
+                    ]
+          }
         ];
         /* ========================================================================= */
 
         const grid = document.getElementById('product-grid');
         const productPage = document.getElementById('product-page');
+        const mainStore = document.getElementById('main-store');
 
+        // Toggle Edit Mode Logic
         function toggleEditMode() {
             isEditModeActive = !isEditModeActive;
+            
             const dot = document.getElementById('toggle-dot');
             const bg = document.getElementById('toggle-bg');
             const text = document.getElementById('toggle-text');
             const statusDot = document.getElementById('status-dot');
 
             if (isEditModeActive) {
-                dot.classList.add('translate-x-6');
+                dot.classList.add('translate-x-6'); // Move dot right
                 bg.classList.replace('bg-gray-600', 'bg-green-500');
                 text.textContent = 'Edit Mode: ON';
                 text.classList.replace('text-gray-300', 'text-white');
                 statusDot.classList.replace('bg-gray-500', 'bg-green-500');
                 statusDot.classList.add('animate-pulse');
             } else {
-                dot.classList.remove('translate-x-6');
+                dot.classList.remove('translate-x-6'); // Move dot left
                 bg.classList.replace('bg-green-500', 'bg-gray-600');
                 text.textContent = 'Edit Mode: OFF';
                 text.classList.replace('text-white', 'text-gray-300');
                 statusDot.classList.replace('bg-green-500', 'bg-gray-500');
                 statusDot.classList.remove('animate-pulse');
             }
-            initStore();
+            
+            initStore(); // Re-render the grid to show/hide edit buttons
         }
 
+        // Render the Storefront
         function initStore() {
             grid.innerHTML = '';
+            
             inventory.forEach((item, index) => {
                 const delay = index * 50; 
                 const card = document.createElement('div');
-                card.className = "group cursor-pointer bg-white dark:bg-white/[0.03] backdrop-blur rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 reveal active border border-gray-100 dark:border-white/10 relative";
+                card.className = "group cursor-pointer bg-white dark:bg-[#1c1c1e] rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 reveal active border border-gray-100 dark:border-gray-800 relative";
                 card.style.transitionDelay = `${delay}ms`;
                 card.onclick = () => openProduct(item.id);
 
+                // Admin Controls on Card (Only show if toggle is ON)
                 let adminControls = '';
                 if (isAdmin && isEditModeActive) {
                     adminControls = `
@@ -342,33 +352,37 @@
 
                 card.innerHTML = `
                     ${adminControls}
-                    <div class="aspect-[4/3] bg-gray-100 dark:bg-white/5 overflow-hidden relative">
+                    <div class="aspect-[4/3] bg-gray-100 dark:bg-black overflow-hidden relative">
+                        <!-- Added an onerror fallback just in case the image hasn't been uploaded yet -->
                         <img src="${item.mainImage}" onerror="this.src='https://via.placeholder.com/800x600?text=Image+Not+Found'" alt="${item.name}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
                     </div>
                     <div class="p-6 sm:p-8 text-center">
                         <h3 class="text-xl sm:text-2xl font-bold tracking-tight mb-2 line-clamp-1">${item.name}</h3>
                         <p class="text-sm sm:text-base text-gray-500 mb-4 line-clamp-2">${item.tagline}</p>
-                        <span class="text-sm font-semibold text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10 px-4 py-2 rounded-full">${item.price}</span>
+                        <span class="text-sm font-semibold text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-full">${item.price}</span>
                     </div>
                 `;
                 grid.appendChild(card);
             });
 
+            // Add the "Add New Product" Card for Admins (Only show if toggle is ON)
             if (isAdmin && isEditModeActive) {
                 const addCard = document.createElement('div');
-                addCard.className = "cursor-pointer bg-gray-50 dark:bg-white/5 border-2 border-dashed border-gray-300 dark:border-white/10 rounded-3xl flex flex-col items-center justify-center min-h-[250px] p-6 text-center hover:bg-gray-100 dark:hover:bg-white/10 hover:border-apple-blue transition-colors reveal active group";
+                addCard.className = "cursor-pointer bg-gray-50 dark:bg-gray-900 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-3xl flex flex-col items-center justify-center min-h-[250px] p-6 text-center hover:bg-gray-100 dark:hover:bg-gray-800 hover:border-apple-blue transition-colors reveal active group";
                 addCard.onclick = () => openEditModal(null);
                 addCard.innerHTML = `
-                    <div class="w-16 h-16 bg-white dark:bg-white/10 rounded-full flex items-center justify-center mb-4 shadow-sm group-hover:scale-110 transition-transform">
+                    <div class="w-16 h-16 bg-white dark:bg-black rounded-full flex items-center justify-center mb-4 shadow-sm group-hover:scale-110 transition-transform">
                         <i data-lucide="plus" class="w-8 h-8 text-apple-blue"></i>
                     </div>
                     <span class="font-bold text-base sm:text-lg text-gray-600 dark:text-gray-300">Add New Product</span>
                 `;
                 grid.appendChild(addCard);
             }
+
             lucide.createIcons();
         }
 
+        // Open Product Page
         function openProduct(id) {
             const item = inventory.find(i => i.id === id);
             if (!item) return;
@@ -385,8 +399,9 @@
             item.scrollingImages.forEach(imgSrc => {
                 const img = document.createElement('img');
                 img.src = imgSrc;
+                // Add fallback for missing gallery images
                 img.onerror = function() { this.src = 'https://via.placeholder.com/1200x800?text=Gallery+Image+Not+Found'; };
-                img.className = "w-full rounded-3xl shadow-md border border-gray-100 dark:border-white/10 object-cover";
+                img.className = "w-full rounded-3xl shadow-md border border-gray-100 dark:border-gray-800 object-cover";
                 gallery.appendChild(img);
             });
 
@@ -404,11 +419,15 @@
             }, 500);
         }
 
+        /* =========================================================================
+           🛠️ ADMIN MODE LOGIC 🛠️
+        ========================================================================= */
         const adminModal = document.getElementById('admin-modal');
 
         function openEditModal(id) {
             document.getElementById('edit-id').value = id || '';
             document.getElementById('admin-modal-title').textContent = id ? 'Edit Product' : 'Create New Product';
+            
             if (id) {
                 const item = inventory.find(i => i.id === id);
                 document.getElementById('edit-name').value = item.name;
@@ -419,6 +438,7 @@
                 document.getElementById('edit-main-img').value = item.mainImage;
                 document.getElementById('edit-scroll-img').value = item.scrollingImages.join('\n');
             } else {
+                // Clear form for new item
                 document.getElementById('edit-name').value = '';
                 document.getElementById('edit-price').value = '';
                 document.getElementById('edit-tagline').value = '';
@@ -427,6 +447,7 @@
                 document.getElementById('edit-main-img').value = '';
                 document.getElementById('edit-scroll-img').value = '';
             }
+            
             adminModal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
         }
@@ -440,6 +461,7 @@
             const id = document.getElementById('edit-id').value || 'item-' + Date.now();
             const scrollingImgText = document.getElementById('edit-scroll-img').value;
             const scrollImagesArray = scrollingImgText.split('\n').map(s => s.trim()).filter(s => s !== '');
+
             const newItem = {
                 id: id,
                 name: document.getElementById('edit-name').value || 'Unnamed Product',
@@ -450,11 +472,16 @@
                 mainImage: document.getElementById('edit-main-img').value || 'Item/placeholder.jpg',
                 scrollingImages: scrollImagesArray
             };
+
             const existingIndex = inventory.findIndex(i => i.id === id);
-            if (existingIndex >= 0) inventory[existingIndex] = newItem;
-            else inventory.push(newItem);
+            if (existingIndex >= 0) {
+                inventory[existingIndex] = newItem; // Update
+            } else {
+                inventory.push(newItem); // Add new
+            }
+
             closeAdminModal();
-            initStore();
+            initStore(); // Refresh grid
         }
 
         function deleteProduct(id) {
@@ -464,17 +491,23 @@
             }
         }
 
+        // GENERATE CODE TO SAVE TO GITHUB
         const codeModal = document.getElementById('code-modal');
+        
         function exportCode() {
             const codeArea = document.getElementById('export-code-area');
             const codeString = `        let inventory = ${JSON.stringify(inventory, null, 12).replace(/^{/gm, '            {').replace(/^]/gm, '        ]')};`;
+            
             codeArea.value = codeString;
             codeModal.classList.remove('hidden');
             document.getElementById('copy-btn').innerHTML = `<i data-lucide="copy" class="w-4 h-4"></i> Copy Code`;
             lucide.createIcons();
         }
 
-        function closeCodeModal() { codeModal.classList.add('hidden'); }
+        function closeCodeModal() {
+            codeModal.classList.add('hidden');
+        }
+
         function copyExportCode() {
             const codeArea = document.getElementById('export-code-area');
             codeArea.select();
@@ -484,6 +517,7 @@
             setTimeout(closeCodeModal, 1500);
         }
 
+        // Start
         initStore();
     </script>
 </body>
